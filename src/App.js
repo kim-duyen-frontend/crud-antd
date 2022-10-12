@@ -60,10 +60,8 @@ const App = () => {
                   </div>
                 </div>
               ))}
-              <p></p>
             </div>
           </div>
-
         </div>
       </div>
     </div>
