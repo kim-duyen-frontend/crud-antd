@@ -18,8 +18,10 @@ const App = () => {
     values.id = uuidv4();
     values.name = values.text;
     setListUser((current) => [...current, values]);
-
   };
+  const handleDeleteItem = (user) => {
+    setListUser((prev) => prev.filter((data) => data.id !== user.id))
+  }
   return (
     <div className="App">
       <div className="container">
@@ -59,7 +61,7 @@ const App = () => {
                   <div className="actions">
                     <Space size="small">
                       <Button type="primary" size="small" shape="circle" icon={<EditOutlined />} />
-                      <Button type="primary" danger size="small" shape="circle" icon={<DeleteOutlined />} />
+                      <Button type="primary" danger size="small" shape="circle" icon={<DeleteOutlined />} onClick={() => handleDeleteItem(user)} />
                     </Space>
                   </div>
                 </div>
