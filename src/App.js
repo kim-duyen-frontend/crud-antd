@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Typography, Input, Button, Space, Form } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import "./formtodo.scss";
+import ModalEdit from './component/ModalEdit';
 const { Text, Title } = Typography;
 
 const initialState = [
@@ -12,8 +13,12 @@ const initialState = [
   }
 ];
 const App = () => {
+  const [form] = Form.useForm();
   const [listUser, setListUser] = useState(initialState);
+  const [text, setText] = useState("");
+  const [openModalEdit, setOpenModalEdit] = useState(false);
 
+  
   const onFinish = (values) => {
     values.id = uuidv4();
     values.name = values.text;
@@ -23,7 +28,11 @@ const App = () => {
   const handleDeleteItem = (user) => {
     setListUser((prev) => prev.filter((data) => data.id !== user.id))
   }
-  
+  const handleEditItem = (user) => {
+    setOpenModalEdit(true);
+    setText(user.name);
+  }
+
   return (
     <div className="App">
       <div className="container">
@@ -31,6 +40,7 @@ const App = () => {
           <div className="form">
             <Title level={2}>To do list</Title>
             <Form
+              form={form}
               layout="vertical"
               autoComplete="off"
               onFinish={onFinish}
@@ -45,7 +55,7 @@ const App = () => {
                   },
                 ]}
               >
-                <Input size="large" placeholder="text..." />
+                <Input size="large" placeholder="text..." value={text} onChange={(e) => setText(e.target.value)} allowClear />
               </Form.Item>
               <Form.Item>
                 <Space>
@@ -62,7 +72,7 @@ const App = () => {
                   <div className="name">{user.name}</div>
                   <div className="actions">
                     <Space size="small">
-                      <Button type="primary" size="small" shape="circle" icon={<EditOutlined />} />
+                      <Button type="primary" size="small" shape="circle" icon={<EditOutlined />} onClick={() => handleEditItem(user)} />
                       <Button type="primary" danger size="small" shape="circle" icon={<DeleteOutlined />} onClick={() => handleDeleteItem(user)} />
                     </Space>
                   </div>
@@ -72,6 +82,13 @@ const App = () => {
           </div>
         </div>
       </div>
+      <ModalEdit
+        open={openModalEdit}
+        onCancel={() => {
+          setOpenModalEdit(false);
+        }}
+        text={text}
+      />
     </div>
   );
 }
