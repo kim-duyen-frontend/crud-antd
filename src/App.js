@@ -17,11 +17,13 @@ const App = () => {
   const onFinish = (values) => {
     values.id = uuidv4();
     values.name = values.text;
+    delete values.text;
     setListUser((current) => [...current, values]);
   };
   const handleDeleteItem = (user) => {
     setListUser((prev) => prev.filter((data) => data.id !== user.id))
   }
+  
   return (
     <div className="App">
       <div className="container">
