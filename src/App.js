@@ -1,20 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Typography, Input, Button, Space, Form } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import "./formtodo.scss";
 const { Text, Title } = Typography;
 
+const initialState = [
+  {
+    id: uuidv4(),
+    name: "Kim Duyên"
+  }
+];
 const App = () => {
-  const initialState = [
-    {
-      id: uuidv4(),
-      name: "Kim Duyên"
-    }
-  ];
+  const [listUser, setListUser] = useState(initialState);
+
   const onFinish = (values) => {
     values.id = uuidv4();
-    console.log({ ...values });
+    values.name = values.text;
+    setListUser((current) => [...current, values]);
+
   };
   return (
     <div className="App">
@@ -37,7 +41,7 @@ const App = () => {
                   },
                 ]}
               >
-                <Input size="large" placeholder="enter text..." />
+                <Input size="large" placeholder="text..." />
               </Form.Item>
               <Form.Item>
                 <Space>
@@ -49,7 +53,7 @@ const App = () => {
             </Form>
             <div className="listUser">
               <Text type="success">List User Current</Text>
-              {initialState.map((user) => (
+              {listUser.map((user) => (
                 <div className="item" key={user.id}>
                   <div className="name">{user.name}</div>
                   <div className="actions">
