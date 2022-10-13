@@ -17,8 +17,9 @@ const App = () => {
   const [listUser, setListUser] = useState(initialState);
   const [text, setText] = useState("");
   const [openModalEdit, setOpenModalEdit] = useState(false);
+  const [toggleSummit, setToggleSubmit] = useState(true);
+  const [dataUser, setDataUser] = useState({});
 
-  
   const onFinish = (values) => {
     values.id = uuidv4();
     values.name = values.text;
@@ -30,9 +31,27 @@ const App = () => {
   }
   const handleEditItem = (user) => {
     setOpenModalEdit(true);
+    setDataUser(user);
     setText(user.name);
+    setToggleSubmit(false);
   }
-
+  const onCreate = (newName) => {
+    // console.log('Received values of form: ', newName);
+    if (newName && !toggleSummit) {
+      setListUser(
+        listUser.map((item) => {
+          if (item.id === dataUser.id) {
+            return {
+              ...item,
+              name: newName
+            };
+          }
+          return item;
+        })
+      );
+      setToggleSubmit(true);
+    }
+  };
   return (
     <div className="App">
       <div className="container">
@@ -88,6 +107,7 @@ const App = () => {
           setOpenModalEdit(false);
         }}
         text={text}
+        onCreate={onCreate}
       />
     </div>
   );

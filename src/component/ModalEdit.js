@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, Modal } from 'antd';
 
-const ModalEdit = ({ open, onCancel, text }) => {
+const ModalEdit = ({ open, onCancel, text, onCreate }) => {
     const [form] = Form.useForm();
     const [name, setName] = useState("");
 
@@ -22,7 +22,7 @@ const ModalEdit = ({ open, onCancel, text }) => {
             cancelText="Cancel"
             onCancel={onCancel}
             onOk={() => {
-                console.log("Get name success", text);
+                onCreate(name);
                 onCancel();
             }}
         >
